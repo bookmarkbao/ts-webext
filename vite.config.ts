@@ -3,9 +3,7 @@
 import { dirname, relative } from 'node:path'
 import type { UserConfig } from 'vite'
 import { defineConfig } from 'vite'
-import Icons from 'unplugin-icons/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-// import UnoCSS from 'unocss/vite'
 import react from '@vitejs/plugin-react'
 import jotaiDebugLabel from 'jotai/babel/plugin-debug-label'
 import jotaiReactRefresh from 'jotai/babel/plugin-react-refresh'
@@ -32,7 +30,6 @@ export const sharedConfig: UserConfig = {
     }),
     AutoImport({
       imports: [
-        'vue',
         {
           'webextension-polyfill': [
             ['*', 'browser'],
@@ -41,12 +38,6 @@ export const sharedConfig: UserConfig = {
       ],
       dts: r('src/auto-imports.d.ts'),
     }),
-
-    // https://github.com/antfu/unplugin-icons
-    Icons(),
-
-    // https://github.com/unocss/unocss
-    // UnoCSS(),
 
     // rewrite assets to use relative path
     {
@@ -88,9 +79,5 @@ export default defineConfig(({ command }) => ({
         popup: r('src/popup/index.html'),
       },
     },
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
   },
 }))
