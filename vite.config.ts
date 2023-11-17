@@ -9,9 +9,12 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
+import react from '@vitejs/plugin-react'
+import jotaiDebugLabel from 'jotai/babel/plugin-debug-label'
+import jotaiReactRefresh from 'jotai/babel/plugin-react-refresh'
+import tsconfigPaths from 'vite-tsconfig-paths'
 import { isDev, port, r } from './scripts/utils'
 import packageJson from './package.json'
-
 export const sharedConfig: UserConfig = {
   root: r('src'),
   resolve: {
@@ -24,8 +27,13 @@ export const sharedConfig: UserConfig = {
     __NAME__: JSON.stringify(packageJson.name),
   },
   plugins: [
+    tsconfigPaths(),
     Vue(),
-
+    react({
+      babel: {
+        plugins: [jotaiDebugLabel, jotaiReactRefresh],
+      },
+    }),
     AutoImport({
       imports: [
         'vue',
