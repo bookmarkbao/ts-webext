@@ -3,12 +3,9 @@
 import { dirname, relative } from 'node:path'
 import type { UserConfig } from 'vite'
 import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
 import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
-import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import UnoCSS from 'unocss/vite'
+// import UnoCSS from 'unocss/vite'
 import react from '@vitejs/plugin-react'
 import jotaiDebugLabel from 'jotai/babel/plugin-debug-label'
 import jotaiReactRefresh from 'jotai/babel/plugin-react-refresh'
@@ -28,7 +25,6 @@ export const sharedConfig: UserConfig = {
   },
   plugins: [
     tsconfigPaths(),
-    Vue(),
     react({
       babel: {
         plugins: [jotaiDebugLabel, jotaiReactRefresh],
@@ -46,24 +42,11 @@ export const sharedConfig: UserConfig = {
       dts: r('src/auto-imports.d.ts'),
     }),
 
-    // https://github.com/antfu/unplugin-vue-components
-    Components({
-      dirs: [r('src/components')],
-      // generate `components.d.ts` for ts support with Volar
-      dts: r('src/components.d.ts'),
-      resolvers: [
-        // auto import icons
-        IconsResolver({
-          prefix: '',
-        }),
-      ],
-    }),
-
     // https://github.com/antfu/unplugin-icons
     Icons(),
 
     // https://github.com/unocss/unocss
-    UnoCSS(),
+    // UnoCSS(),
 
     // rewrite assets to use relative path
     {
@@ -77,13 +60,9 @@ export const sharedConfig: UserConfig = {
   ],
   optimizeDeps: {
     include: [
-      'vue',
-      '@vueuse/core',
       'webextension-polyfill',
     ],
-    exclude: [
-      'vue-demi',
-    ],
+    exclude: [],
   },
 }
 
@@ -103,10 +82,6 @@ export default defineConfig(({ command }) => ({
     outDir: r('extension/dist'),
     emptyOutDir: false,
     sourcemap: isDev ? 'inline' : false,
-    // https://developer.chrome.com/docs/webstore/program_policies/#:~:text=Code%20Readability%20Requirements
-    terserOptions: {
-      mangle: false,
-    },
     rollupOptions: {
       input: {
         options: r('src/options/index.html'),
